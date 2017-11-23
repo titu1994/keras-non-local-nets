@@ -1,4 +1,4 @@
-from keras.layers import Activation, Reshape, Lambda, dot, add
+from keras.layers import Activation, Reshape, Lambda, concatenate, dot, add
 from keras.layers import Conv1D, Conv2D, Conv3D
 from keras.layers import MaxPool1D
 from keras import backend as K
@@ -7,6 +7,9 @@ from keras import backend as K
 def non_local_block(ip, shield_computation=True, mode='embedded'):
     channel_dim = 1 if K.image_data_format() == 'channels_first' else -1
     ip_shape = K.int_shape(ip)
+
+    if mode not in ['gaussian', 'embedded', 'dot', 'concatenate']:
+        raise ValueError('`mode` must be one of `gaussian`, `embedded`, `dot` or `concatenate`')
 
     dim1, dim2, dim3 = None, None, None
 
@@ -64,6 +67,9 @@ def non_local_block(ip, shield_computation=True, mode='embedded'):
 
         # scale the values to make it size invariant
         f = Lambda(lambda z: 1./batchsize * f)(f)
+
+    elif mode == 'concatenate':  # Concatenation instantiation
+        raise NotImplemented('Concatenation mode has not been implemented yet')
 
     else:  # Embedded Gaussian instantiation
         # theta path
