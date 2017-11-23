@@ -44,23 +44,11 @@ def non_local_block(ip, shield_computation=True, mode='embedded'):
 
     elif mode == 'dot':  # Dot instantiation
         # theta path
-        if rank == 3:
-            theta = Conv1D(channels // 2, 1, padding='same', use_bias=False)(ip)
-        elif rank == 4:
-            theta = Conv2D(channels // 2, (1, 1), padding='same', use_bias=False)(ip)
-        else:
-            theta = Conv3D(channels // 2, (1, 1, 1), padding='same', use_bias=False)(ip)
-
+        theta = _convND(ip, rank, channels // 2)
         theta = Reshape((-1, channels // 2))(theta)
 
         # phi path
-        if rank == 3:
-            phi = Conv1D(channels // 2, 1, padding='same', use_bias=False)(ip)
-        elif rank == 4:
-            phi = Conv2D(channels // 2, (1, 1), padding='same', use_bias=False)(ip)
-        else:
-            phi = Conv3D(channels // 2, (1, 1, 1), padding='same', use_bias=False)(ip)
-
+        phi = _convND(ip, rank, channels // 2)
         phi = Reshape((-1, channels // 2))(phi)
 
         f = dot([theta, phi], axes=2)
@@ -73,23 +61,11 @@ def non_local_block(ip, shield_computation=True, mode='embedded'):
 
     else:  # Embedded Gaussian instantiation
         # theta path
-        if rank == 3:
-            theta = Conv1D(channels // 2, 1, padding='same', use_bias=False)(ip)
-        elif rank == 4:
-            theta = Conv2D(channels // 2, (1, 1), padding='same', use_bias=False)(ip)
-        else:
-            theta = Conv3D(channels // 2, (1, 1, 1), padding='same', use_bias=False)(ip)
-
+        theta = _convND(ip, rank, channels // 2)
         theta = Reshape((-1, channels // 2))(theta)
 
         # phi path
-        if rank == 3:
-            phi = Conv1D(channels // 2, 1, padding='same', use_bias=False)(ip)
-        elif rank == 4:
-            phi = Conv2D(channels // 2, (1, 1), padding='same', use_bias=False)(ip)
-        else:
-            phi = Conv3D(channels // 2, (1, 1, 1), padding='same', use_bias=False)(ip)
-
+        phi = _convND(ip, rank, channels // 2)
         phi = Reshape((-1, channels // 2))(phi)
 
         if shield_computation:
@@ -100,13 +76,7 @@ def non_local_block(ip, shield_computation=True, mode='embedded'):
         f = Activation('softmax')(f)
 
     # g path
-    if rank == 3:
-        g = Conv1D(channels // 2, 1, padding='same', use_bias=False)(ip)
-    elif rank == 4:
-        g = Conv2D(channels // 2, (1, 1), padding='same', use_bias=False)(ip)
-    else:
-        g = Conv3D(channels // 2, (1, 1, 1), padding='same', use_bias=False)(ip)
-
+    g = _convND(ip, rank, channels // 2)
     g = Reshape((-1, channels // 2))(g)
 
     if shield_computation and mode == 'embedded':
@@ -131,9 +101,21 @@ def non_local_block(ip, shield_computation=True, mode='embedded'):
             y = Reshape((channels // 2, dim1, dim2, dim3))(y)
 
     # project filters
-    y = Conv2D(channels, (1, 1), padding='same', use_bias=False)(y)
+    y = _convND(y, rank, channels)
 
     # residual connection
     residual = add([ip, y])
 
     return residual
+
+
+def _convND(ip, rank, channels):
+    assert rank in [3, 4, 5], "Rank of input must be 3, 4 or 5"
+
+    if rank == 3:
+        x = Conv1D(channels, 1, padding='same', use_bias=False)(ip)
+    elif rank == 4:
+        x = Conv2D(channels, (1, 1), padding='same', use_bias=False)(ip)
+    else:
+        x = Conv3D(channels, (1, 1, 1), padding='same', use_bias=False)(ip)
+    return x

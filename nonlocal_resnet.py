@@ -280,10 +280,10 @@ def _string_to_function(identifier):
     return identifier
 
 
-def ResNet(input_shape=None, classes=10, block='bottleneck', residual_unit='v2', repetitions=None,
-           initial_filters=64, activation='softmax', include_top=True, input_tensor=None, dropout=None,
-           transition_dilation_rate=(1, 1), initial_strides=(2, 2), initial_kernel_size=(7, 7),
-           initial_pooling='max', final_pooling=None, top='classification'):
+def NonLocalResNet(input_shape=None, classes=10, block='bottleneck', residual_unit='v2', repetitions=None,
+                   initial_filters=64, activation='softmax', include_top=True, input_tensor=None, dropout=None,
+                   transition_dilation_rate=(1, 1), initial_strides=(2, 2), initial_kernel_size=(7, 7),
+                   initial_pooling='max', final_pooling=None, top='classification'):
     """Builds a custom ResNet like architecture. Defaults to ResNet50 v2.
     Args:
         input_shape: optional shape tuple, only to be specified
@@ -426,36 +426,36 @@ def ResNet(input_shape=None, classes=10, block='bottleneck', residual_unit='v2',
     return model
 
 
-def ResNet18(input_shape, classes):
+def NonLocalResNet18(input_shape, classes):
     """ResNet with 18 layers and v2 residual units
     """
-    return ResNet(input_shape, classes, basic_block, repetitions=[2, 2, 2, 2])
+    return NonLocalResNet(input_shape, classes, basic_block, repetitions=[2, 2, 2, 2])
 
 
-def ResNet34(input_shape, classes):
+def NonLocalResNet34(input_shape, classes):
     """ResNet with 34 layers and v2 residual units
     """
-    return ResNet(input_shape, classes, basic_block, repetitions=[3, 4, 6, 3])
+    return NonLocalResNet(input_shape, classes, basic_block, repetitions=[3, 4, 6, 3])
 
 
-def ResNet50(input_shape, classes):
+def NonLocalResNet50(input_shape, classes):
     """ResNet with 50 layers and v2 residual units
     """
-    return ResNet(input_shape, classes, bottleneck, repetitions=[3, 4, 6, 3])
+    return NonLocalResNet(input_shape, classes, bottleneck, repetitions=[3, 4, 6, 3])
 
 
-def ResNet101(input_shape, classes):
+def NonLocalResNet101(input_shape, classes):
     """ResNet with 101 layers and v2 residual units
     """
-    return ResNet(input_shape, classes, bottleneck, repetitions=[3, 4, 23, 3])
+    return NonLocalResNet(input_shape, classes, bottleneck, repetitions=[3, 4, 23, 3])
 
 
-def ResNet152(input_shape, classes):
+def NonLocalResNet152(input_shape, classes):
     """ResNet with 152 layers and v2 residual units
     """
-    return ResNet(input_shape, classes, bottleneck, repetitions=[3, 8, 36, 3])
+    return NonLocalResNet(input_shape, classes, bottleneck, repetitions=[3, 8, 36, 3])
 
 
 if __name__ == '__main__':
-    model = ResNet18((64, 96, 3), classes=10)
+    model = NonLocalResNet18((32, 32, 3), classes=10)
     model.summary()
