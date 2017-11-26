@@ -54,7 +54,11 @@ def non_local_block(ip, shield_computation=True, mode='embedded'):
         f = dot([theta, phi], axes=2)
 
         # scale the values to make it size invariant
-        f = Lambda(lambda z: 1./batchsize * f)(f)
+        if batchsize is not None:
+            f = Lambda(lambda z: 1./ batchsize * z)(f)
+        else:
+            f = Lambda(lambda z: 1. / 128 * z)(f)
+
 
     elif mode == 'concatenate':  # Concatenation instantiation
         raise NotImplemented('Concatenation mode has not been implemented yet')
