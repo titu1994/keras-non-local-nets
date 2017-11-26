@@ -4,7 +4,7 @@ from keras.layers import MaxPool1D
 from keras import backend as K
 
 
-def non_local_block(ip, shield_computation=True, mode='embedded'):
+def non_local_block(ip, computation_compression=2, mode='embedded'):
     channel_dim = 1 if K.image_data_format() == 'channels_first' else -1
     ip_shape = K.int_shape(ip)
 
@@ -72,9 +72,9 @@ def non_local_block(ip, shield_computation=True, mode='embedded'):
         phi = _convND(ip, rank, channels // 2)
         phi = Reshape((-1, channels // 2))(phi)
 
-        if shield_computation:
+        if computation_compression > 1:
             # shielded computation
-            phi = MaxPool1D()(phi)
+            phi = MaxPool1D(computation_compression)(phi)
 
         f = dot([theta, phi], axes=2)
         f = Activation('softmax')(f)
@@ -83,9 +83,9 @@ def non_local_block(ip, shield_computation=True, mode='embedded'):
     g = _convND(ip, rank, channels // 2)
     g = Reshape((-1, channels // 2))(g)
 
-    if shield_computation and mode == 'embedded':
+    if computation_compression > 1 and mode == 'embedded':
         # shielded computation
-        g = MaxPool1D()(g)
+        g = MaxPool1D(computation_compression)(g)
 
     # compute output path
     y = dot([f, g], axes=[2, 1])

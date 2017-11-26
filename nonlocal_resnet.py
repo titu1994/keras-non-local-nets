@@ -157,7 +157,7 @@ def _residual_block(block_function, filters, blocks, stage,
             # Non Local Blook
             if filters >= 256:
                 print("Filters : ", filters, "Adding Non Local Blocks")
-                x = non_local_block(x, mode='embedded', shield_computation=True)
+                x = non_local_block(x, mode='embedded', computation_compression=True)
 
         return x
 
