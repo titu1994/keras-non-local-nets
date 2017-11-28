@@ -2,7 +2,7 @@
 Keras implementation of Non-local blocks from the paper ["Non-local Neural Networks"](https://arxiv.org/abs/1711.07971)
 
 - Support for `"Gaussian"`, `"Embedded Gaussian"` and `"Dot"` instantiations of the Non-Local block. 
-- Support for shielded computation mode (reduces computation by 4x)
+- Support for variable shielded computation mode (reduces computation by N**2 x, where N is default to 2)
 - Support for `"Concatenation"` instantiation will be supported when authors release their code.
 
 # Usage
@@ -14,7 +14,7 @@ from non_local import non_local_block
 
 ip = Input(shape=(##)) # this can be a rank 3, 4 or 5 tensor shape
 x = ConvND(...)  # as againm can be Conv1D, Conv2D or Conv3D
-x = non_local_block(x, shield_computation=True, mode='embedded')
+x = non_local_block(x, computation_compression=2, mode='embedded')
 ...
 
 ```
