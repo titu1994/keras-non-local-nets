@@ -114,8 +114,8 @@ def non_local_block(ip, intermediate_dim=None, compression=2,
         f = Activation('softmax')(f)
 
     # g path
-    g = _convND(ip, rank, channels // 2)
-    g = Reshape((-1, channels // 2))(g)
+    g = _convND(ip, rank, intermediate_dim)
+    g = Reshape((-1, intermediate_dim))(g)
 
     if compression > 1 and mode == 'embedded':
         # shielded computation
