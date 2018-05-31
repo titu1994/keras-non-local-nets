@@ -157,7 +157,7 @@ def _residual_block(block_function, filters, blocks, stage,
             # Non Local Blook
             if filters >= 256:
                 print("Filters : ", filters, "Adding Non Local Blocks")
-                x = non_local_block(x, mode='embedded', computation_compression=True)
+                x = non_local_block(x, mode='embedded', compression=2)
 
         return x
 
@@ -457,5 +457,5 @@ def NonLocalResNet152(input_shape, classes):
 
 
 if __name__ == '__main__':
-    model = NonLocalResNet18((32, 32, 3), classes=10)
+    model = NonLocalResNet18((128, 160, 3), classes=10)
     model.summary()

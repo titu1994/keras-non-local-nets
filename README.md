@@ -14,7 +14,7 @@ from non_local import non_local_block
 
 ip = Input(shape=(##)) # this can be a rank 3, 4 or 5 tensor shape
 x = ConvND(...)  # as againm can be Conv1D, Conv2D or Conv3D
-x = non_local_block(x, computation_compression=2, mode='embedded')
+x = non_local_block(x, compression=2, mode='embedded')
 ...
 
 ```
