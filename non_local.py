@@ -15,10 +15,11 @@ def non_local_block(ip, intermediate_dim=None, compression=2,
         intermediate_dim: The dimension of the intermediate representation. Can be
             `None` or a positive integer greater than 0. If `None`, computes the
             intermediate dimension as half of the input channel dimension.
-        compression: Compresses the intermediate representation during
-            the dot products to reduce memory consumption. Default is set to 2,
-            which states halve the time/space/spatio-time dimension for the
-            intermediate step. Set to 1 to prevent computation compression.
+        compression: None or positive integer. Compresses the intermediate
+            representation during the dot products to reduce memory consumption.
+            Default is set to 2, which states halve the time/space/spatio-time
+            dimension for the intermediate step. Set to 1 to prevent computation
+            compression. None or 1 causes no reduction.
         mode: Mode of operation. Can be one of `embedded`, `gaussian`, `dot` or
             `concatenate`.
         add_residual: Boolean value to decide if the residual connection should be
@@ -32,6 +33,9 @@ def non_local_block(ip, intermediate_dim=None, compression=2,
 
     if mode not in ['gaussian', 'embedded', 'dot', 'concatenate']:
         raise ValueError('`mode` must be one of `gaussian`, `embedded`, `dot` or `concatenate`')
+
+    if compression is None:
+        compression = 1
 
     dim1, dim2, dim3 = None, None, None
 
