@@ -156,9 +156,9 @@ def _convND(ip, rank, channels):
     assert rank in [3, 4, 5], "Rank of input must be 3, 4 or 5"
 
     if rank == 3:
-        x = Conv1D(channels, 1, padding='same', use_bias=False)(ip)
+        x = Conv1D(channels, 1, padding='same', use_bias=False, kernel_initializer='he_normal')(ip)
     elif rank == 4:
-        x = Conv2D(channels, (1, 1), padding='same', use_bias=False)(ip)
+        x = Conv2D(channels, (1, 1), padding='same', use_bias=False, kernel_initializer='he_normal')(ip)
     else:
-        x = Conv3D(channels, (1, 1, 1), padding='same', use_bias=False)(ip)
+        x = Conv3D(channels, (1, 1, 1), padding='same', use_bias=False, kernel_initializer='he_normal')(ip)
     return x
