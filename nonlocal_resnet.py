@@ -149,7 +149,7 @@ def _residual_block(block_function, filters, blocks, stage,
         for i in range(blocks):
             x = block_function(filters=filters, stage=stage, block=i,
                                transition_strides=transition_strides[i],
-                               dilation_rate=dilation_rates[i],
+                               dilation_rate=transition_dilation_rates[i],
                                is_first_block_of_first_layer=(is_first_layer and i == 0),
                                dropout=dropout,
                                residual_unit=residual_unit)(x)
