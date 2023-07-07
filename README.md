@@ -28,7 +28,7 @@ from non_local_layerstyle import NonLocalBlock
 from tensorflow.keras.layers import Input, Conv1D, Conv2D, Conv3D
 
 # Define the input shape
-input_shape = (...)  # Assuming input images of size 32x32 with 3 channels
+input_shape = (...)  # shape of input tensor
 
 model = Sequential()
 model.add(ConvND(...))         # convolution operation with an "N" rank order of 3, 4 or 5
