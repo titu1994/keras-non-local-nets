@@ -3,14 +3,31 @@ import numpy as np
 
 from non_local import NonLocalBlock
 
-def test_tensors(rank=3):
+def tensors(rank=3,L=3,range_nums=(1,5),dims=False):
+    """
+    Generate a random tensor and apply a non-local block operation.
 
-    x = np.random.randint(1,5,(rank*[3]))*1.0
+    Parameters
+    ------------
+    rank : int
+        Rank of the tensor (number of dimensions).
+    L : int 
+        characteristic side length of tensor
+    range_nums: tuple 
+        Range of random integers to generate the tensor values.
+    dims : tuple or False)
+        Custom dimensions for the tensor. If False, the tensor will have shape rank*[L].
+    """
+    tensor_shape = rank*[L] if not dims else dims
+    x = np.random.randint(*range_nums,(tensor_shape))*1.0
     print (x)
 
     non_local_block = NonLocalBlock(intermediate_dim=None, compression=2, mode='embedded', add_residual=True)
     output = non_local_block(x)
     print(output)
 
+
 for i in [3, 4,5]:
-    test_tensors(i)
+    tensors(i)
+
+tensors(dims=(100,99,102))   #stress case
