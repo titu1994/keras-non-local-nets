@@ -1,5 +1,5 @@
 # Keras Non-Local Neural Networks
-Keras implementation of Non-local blocks from the paper ["Non-local Neural Networks"](https://arxiv.org/abs/1711.07971)
+Keras implementation of Non-local blocks from [[1]](https://arxiv.org/abs/1711.07971).
 
 - Support for `"Gaussian"`, `"Embedded Gaussian"` and `"Dot"` instantiations of the Non-Local block. 
 - Support for variable shielded computation mode (reduces computation by N**2 x, where N is default to 2)
@@ -39,6 +39,12 @@ model.add(NonLocalBlock(intermediate_dim=None, compression=2, mode='embedded', a
 
 
 # Basic block
-From the paper, a basic Non-Local block looks like below (with the Embedded Gaussian instantiation)
+From [[1]](https://arxiv.org/abs/1711.07971), a basic Non-Local block with the Embedded Gaussian instantiation has the below logic:
 
-<img src="https://github.com/titu1994/keras-non-local-nets/blob/master/images/non-local-block.PNG?raw=true" width=100% height=100%>
+
+
+<center><img src="https://github.com/titu1994/keras-non-local-nets/blob/master/images/non-local-block.PNG?raw=true" width=50% ></center>
+
+
+1. Xiaolong Wang, Ross Girshick, Abhinav Gupta, Kaiming He. "Non-local Neural Networks." arXiv:1711.07971 [cs.CV], 21 Nov 2017. [Link](https://arxiv.org/abs/1711.07971)
+
