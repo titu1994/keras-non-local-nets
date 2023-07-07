@@ -34,7 +34,7 @@ from keras.regularizers import l2
 from keras import backend as K
 from keras.applications.imagenet_utils import _obtain_input_shape
 
-from non_local import non_local_block
+from non_local import NonLocalBlock
 
 
 def _bn_relu(x, bn_name=None, relu_name=None):
@@ -157,7 +157,8 @@ def _residual_block(block_function, filters, blocks, stage,
             # Non Local Blook
             if filters >= 256:
                 print("Filters : ", filters, "Adding Non Local Blocks")
-                x = non_local_block(x, mode='embedded', compression=2)
+                non_local_block = NonLocalBlock(mode='embedded', compression=2)
+                x = non_local_block(x)
 
         return x
 
