@@ -10,13 +10,15 @@ Keras implementation of Non-local blocks from the paper ["Non-local Neural Netwo
 The script `non_local.py` contains a single function : `non_local_block` which takes in an input tensor and wraps a non-local block around it.
 
 ```python
-from non_local import non_local_block
+from non_local import NonLocalBlock
+from tensorflow.keras.layers import Input, Conv1D, Conv2D, Conv3D
 
-ip = Input(shape=(##)) # this can be a rank 3, 4 or 5 tensor shape
-x = ConvND(...)  # as againm can be Conv1D, Conv2D or Conv3D
-x = non_local_block(x, compression=2, mode='embedded')
+ip = Input(shape=(##))  # input tensor with an "N" rank order of 3, 4 or 5
+x = ConvND(...)         # convolution operation with aforementioned rank 
 ...
-
+non_local_block = NonLocalBlock(intermediate_dim=None, compression=2, mode='embedded', add_residual=True)
+x = non_local_block(x)
+...
 ```
 
 # Basic block
