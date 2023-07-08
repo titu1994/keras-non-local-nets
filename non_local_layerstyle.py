@@ -1,10 +1,10 @@
-from tensorflow.keras.layers import Conv1D, Conv2D, Conv3D, Reshape, dot, Activation, Lambda, MaxPool1D, add
+from tensorflow.keras.layers import Layer, Conv1D, Conv2D, Conv3D, Reshape, dot, Activation, Lambda, MaxPool1D, add
 from tensorflow.keras import backend as K
 
-class NonLocalBlock:
-    def __init__(self, intermediate_dim=None, compression=2, mode='embedded', add_residual=True):
+class NonLocalBlock(Layer):
+    def __init__(self, intermediate_dim=None, compression=2, mode='embedded', add_residual=True, **kwargs):
         """
-        Initializes a NonLocalBlock instance.
+        Initializes a NonLocalBlock layer.
 
         Parameters
         ----------
@@ -16,24 +16,20 @@ class NonLocalBlock:
             Mode of operation. Can be one of `embedded`, `gaussian`, `dot` or `concatenate`.
         add_residual: bool
             Decides if the residual connection should be added or not. Default is True for ResNets, and False for Self Attention.
+        **kwargs: any
+            Additional keyword arguments to be passed to the parent class.
         """
+        super(NonLocalBlock, self).__init__(**kwargs)
         self.intermediate_dim = intermediate_dim
         self.compression = compression
         self.mode = mode
         self.add_residual = add_residual
 
-    def __call__(self, ip):
-        """
-        Applies the Non-Local block to the input tensor.
+    def build(self, input_shape):
+        super(NonLocalBlock, self).build(input_shape)
 
-        Returns:
-            Tensor: Output tensor of the Non-Local block with the same shape as the input.
-
-        Parameters
-        ----------
-        ip: array
-            Input tensor.
-        """
+    def call(self, inputs):
+        ip = inputs
         channel_dim = 1 if K.image_data_format() == 'channels_first' else -1
         input_shape = K.int_shape(ip)
 
